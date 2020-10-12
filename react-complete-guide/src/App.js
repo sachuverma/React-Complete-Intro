@@ -1,93 +1,78 @@
 import React, { Component } from 'react';
 import './App.css';
 import Person from './Person/Person'
-import UserInput from './UserInput/UserInput'
-import UserOutput from './UserOutput/UserOutput'
+
 
 class App extends Component {
   state = {
     persons: [
-      { name: "Sachu", age: "20" },
-      { name: "Chauth", age: "19" },
-      { name: "Gulli", age: "20" }
+      { id:'sadff', name: "Sachu", age: "20" },
+      { id:'qwert', name: "Chauth", age: "19" },
+      { id:'rtewe', name: "Gulli", age: "20" }
     ],
     otherData: 'some other data',
-    username: 'superuser'
+    showPersons: false
   }
 
-  switchNameHandler = (newName) => {
-    console.log('switch name button clicked');
-    // DONT DO THIS: 
-    // this.state.persons[0].name = "Bhopu";
-    this.setState({
-      persons: [
-        { name: newName, age: "20" },
-        { name: "Chauth", age: "19" },
-        { name: "Gulli", age: "21" }
-      ]
-    })
+  togglePersonsHandler = () => {
+    this.setState({showPersons: !this.state.showPersons});
   }
 
-  nameChangeHandler = (event) => {
-    console.log('change name inputbox');
-    this.setState({
-      persons: [
-        { name: "Sachu", age: "20" },
-        { name: event.target.value, age: "19" },
-        { name: "Gulli", age: "21" }
-      ]
-    })
-  }
-
-  usernameChangedHandler = (event) => {
-    this.setState({
-      username: event.target.value
+  nameChangedHandler = (event, id) => {
+    const personIndex = this.state.persons.findIndex(p => { 
+      return id === p.id; 
     });
+    const person = {
+      ...this.state.persons[personIndex]
+    };
+
+    person.name = event.target.value;
+    const persons = [...this.state.persons];
+    persons[personIndex] = person;
+    this.setState({persons: persons});
+  }
+
+  deletePersonHandler = (personIndex) => {
+    // const persons = this.state.persons.slice();
+    const persons = [...this.state.persons];
+    persons.splice(personIndex, 1);
+    this.setState({persons: persons});
   }
 
   render() {
     const style = {
-      backgroundColor: 'rgb(49, 84, 136)',
+      backgroundColor: 'rgba(49, 84, 136, 0.9)',
       font: 'inherit',
       color: 'white',
-      borderRadius: '12px',
       padding: '8px',
       cursor: 'pointer'
     };
 
+    let persons = null;
+    if (this.state.showPersons){
+      persons = (
+        <div>
+          {this.state.persons.map((person, index) => {
+            return <Person 
+              key={person.id}
+              changed={(event) => this.nameChangedHandler(event, person.id)}
+              click={() => this.deletePersonHandler(index)}
+              name={person.name}
+              age={person.age}
+            />
+          })}
+        </div> 
+      );
+    }
+
     return (
       <div className="App">
         <h1>REACT APP</h1>
-        <button style={style} onClick={() => this.switchNameHandler('Nitin') /* not recommended */}>Switch Name</button>
-        
-        <Person 
-          name={this.state.persons[0].name} 
-          age={this.state.persons[0].age}
-        />
-        <Person 
-          name={this.state.persons[1].name} 
-          age={this.state.persons[1].age}
-          click={this.switchNameHandler.bind(this, "Bhopu") /* recommended */} 
-          changed={this.nameChangeHandler}
-        > 
-            My Hobbies: coding...coding...coding 
-        </Person>
-        <Person 
-          name={this.state.persons[2].name} 
-          age={this.state.persons[2].age}
-        />
-
-        
-        <br />
-        <h1>My Work</h1>
-        <UserInput nameChange={this.usernameChangedHandler} currentName={this.state.username}/>
-        <UserOutput userName={this.state.username} />
-        <UserOutput userName="Samrat" />
-        <UserOutput userName={this.state.username}/>
+        <button style={style} onClick={this.togglePersonsHandler}>Toggle Persons</button>
+        {persons}
 
       </div>
     ); 
-    // return React.createElement('div', {className:'App'}, React.createElement('h1', null, 'Heyyy'))
   }
 }
 
