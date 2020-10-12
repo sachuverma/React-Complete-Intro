@@ -40,16 +40,17 @@ class App extends Component {
   }
 
   render() {
-    const style = {
-      backgroundColor: 'rgba(49, 84, 136, 0.9)',
-      font: 'inherit',
-      color: 'white',
-      padding: '8px',
-      cursor: 'pointer'
-    };
+
+    let classes = [];
+    if(this.state.persons.length <= 1) classes.push("red");
 
     let persons = null;
     if (this.state.showPersons){
+      // style.backgroundColor='rgba(100, 0, 0, 1)';
+      // style[':hover'] = {
+      //   backgroundColor: 'rgba(100, 0, 0, 0.8)',
+      // };
+      
       persons = (
         <div>
           {this.state.persons.map((person, index) => {
@@ -67,10 +68,9 @@ class App extends Component {
 
     return (
       <div className="App">
-        <h1>REACT APP</h1>
-        <button style={style} onClick={this.togglePersonsHandler}>Toggle Persons</button>
+        <h1 className={classes.join(' ')}>REACT APP</h1>
+        <button onClick={this.togglePersonsHandler}>Toggle Persons</button>
         {persons}
-
       </div>
     ); 
   }
