@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { Route } from 'react-router-dom';
+import { Route, NavLink } from 'react-router-dom';
 
 import Posts from './Posts/Posts'
+import NewPost from './NewPost/NewPost'
 import './Blog.css';
 
 class Blog extends Component {
@@ -11,14 +12,19 @@ class Blog extends Component {
                 <header className="Header">
                     <nav>
                         <ul>
-                            <li><a href="/">HOME</a></li>
-                            <li><a href="/new-post">NEW POST</a></li>
+                            <li><NavLink to="/" exact>HOME</NavLink></li>
+                            <li><NavLink to={{
+                                pathname: "/new-post",
+                                hash: "#submit",
+                                serach: "?quick-submit=true"
+                            }}>NEW POST</NavLink></li>
                         </ul>
                     </nav>
                 </header>
                 <Route path="/" render={() => <h1 style={{textAlign: "center"}}>Welcome to My React-app</h1>} />
                 {/*<Route path="/" exact render={() => <Posts />} />*/}
                 <Route path="/" exact component={Posts} />
+                <Route path="/new-post" exact component={NewPost} />
             </div>
         );
     }
