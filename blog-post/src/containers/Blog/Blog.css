@@ -1,7 +1,27 @@
-.Posts {
-    display: flex;
-    flex-flow: row wrap;
-    justify-content: center;
-    width: 80%;
-    margin: auto;
+
+.Header ul{
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    text-align: center;
+    background-color: #f3ba8b;
+}
+
+.Header li{
+    display: inline-block;
+    margin: 20px;
+}
+
+.Header a{
+    text-decoration: none;
+    color: rgb(255, 255, 255);
+    /* font-weight: 800; */
+    font-size: 1.2rem;
+}
+
+.Header a:hover,
+.Header a:active {
+    color: #72421a;
+
 }
